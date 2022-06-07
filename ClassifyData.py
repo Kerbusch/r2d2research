@@ -8,6 +8,7 @@ class ClassifyData:
         self.standaardafwijking_roll = 2 # PLACEHOLDER afwijking
         self.standaardafwijking_pitch = 2 # PLACEHOLDER afwijking
         self.standaardafwijking_tijd = 0.5 # goeie afwijking qua tijd
+        
         self.farm_minimum_yaw_classify_waarde = self.classification_data[0]-self.standaardafwijking_yaw  # min van data[0] met standaardafwijking van 2
         self.farm_maximum_yaw_classify_waarde = self.classification_data[0]+self.standaardafwijking_yaw  # max van data[0] met standaardafwijking van 2
         self.uarm_minimum_yaw_classify_waarde = self.classification_data[3]-self.standaardafwijking_yaw  # min van data[3] met standaardafwijking van 2

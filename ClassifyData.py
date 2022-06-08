@@ -2,7 +2,7 @@ class ClassifyData:
     def __init__(self, data):
         # Initialize the data with forearm (yaw, roll, pitch), upper arm (yaw, roll, pitch) and time since last datapoint
         self.data = data  # [y, r, p, y, r, p, tijd]
-        self.classification_data = data  # PLACEHOLDER voor 'goede data' voor classification
+        # self.classification_data = data  # PLACEHOLDER voor 'goede data' voor classification
 
         # TODO mogelijk classification waarden eruit en zelf waardes bepalen.
         # TODO is sneller en misschien meer makkelijker

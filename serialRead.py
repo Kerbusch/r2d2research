@@ -107,6 +107,20 @@ class BicepCurlData:
 
         return self.data
 
+    def readFromSerial(self, bus: serial.Serial):
+        t_now = time.time()
+
+        serial_timer_done = False
+
+        for n in range(0, 1000):
+            s_strin = ser.read_until(b'\n')
+            if time.time() - t_now > 0:
+                if not serial_timer_done:
+                    serial_timer_done = True
+                    print("now")
+                self.inputData(bcd.splitData(s_strin))
+
+
 
 
 # s = b'farm:90.00:90.00:90.00\n'
@@ -128,14 +142,7 @@ if __name__ == "__main__":
     bcd.readJSONFile()
     print("done loading")
 
-    timer_done = False
-    for i in range(0, 1000):
-        s = ser.read_until(b'\n')
-        if time.time() - time_now > 2:
-            if timer_done == False:
-                timer_done = True
-                print("now")
-            bcd.inputData(bcd.splitData(s))
+    bcd.readFromSerial(ser)
 
     print("data collection done")
 

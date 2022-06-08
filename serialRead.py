@@ -89,6 +89,26 @@ class BicepCurlData:
         # Plot the data
         d = self.filterDataPeak()
         plt.plot(d)
+        plt.legend(['f yaw', 'f roll', 'f pitch', 'u yaw', 'u roll', 'u pitch', 'time'])
+        plt.show()
+        return None
+
+    def plotDataWithTime(self):
+        # Plot the data
+        d = self.filterDataPeak()
+
+        x = []
+        for point in d:
+            x.append(point[6])
+
+        y = []
+        for point in d:
+            y.append(point[0:6])
+
+        plt.plot(x, y)
+        plt.title("data from the 2 sensors on time base")
+        plt.xlabel("Time")
+        plt.ylabel("degrees")
         plt.legend(['f yaw', 'f roll', 'f pitch', 'u yaw', 'u roll', 'u pitch'])
         plt.show()
         return None
@@ -142,11 +162,11 @@ if __name__ == "__main__":
     bcd.readJSONFile()
     print("done loading")
 
-    bcd.readFromSerial(ser)
-
-    print("data collection done")
-
-    bcd.writeJSONFile()
+    # bcd.readFromSerial(ser)
+    # print("data collection done")
+    #
+    # bcd.writeJSONFile()
+    # print("done writing")
 
     bcd.plotData()
 

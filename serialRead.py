@@ -129,18 +129,25 @@ class BicepCurlData:
 
         return self.data
 
-    def readFromSerial(self, bus: serial.Serial):
+    def readFromSerial(self, bus: serial.Serial, n: int = 1000, wait: int = 10, length: int = 10):
         t_now = time.time()
+        t_begin = None
+        print("waiting {} seconds".format(wait))
 
         serial_timer_done = False
+        done = False
 
-        for n in range(0, 1000):
+        while not done:
             s_strin = bus.read_until(b'\n')
-            if time.time() - t_now > 0:
+            if time.time() - t_now > wait:
                 if not serial_timer_done:
                     serial_timer_done = True
                     print("now")
+                    t_begin = time.time()
                 self.inputData(self.splitData(s_strin, 4))
+            if t_begin is not None and time.time() - t_begin > length:
+                done = True
+                print("done")
 
 # s = b'farm:90.00:90.00:90.00\n'
 # s1 = b'farm:50.00:50.00:50.00\n'

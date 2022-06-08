@@ -43,7 +43,6 @@ class ClassifyData:
         else:
             # zet bicep curl in correcte classificatie
             return
-    def decisionTree
         
     def getAverageTimeBetweenCurls(self):
         # all data from forearm

@@ -50,7 +50,7 @@ class BicepCurlData:
             self.last_farm_data = None
 
     # split the data on the :
-    def splitData(self, data):
+    def splitData(self, data, expected_output_length=6):
         data = str(data)
         data = data.replace("\\n", "")
         data = data.replace("\n", "")
@@ -59,6 +59,8 @@ class BicepCurlData:
         data = data.replace("b'", "")
         data = data.replace("'", "")
         data_split = data.split(":")
+        if len(data_split) != expected_output_length:
+            return None
         return data_split
 
     # input data with an array as input can use splitData function
@@ -133,15 +135,12 @@ class BicepCurlData:
         serial_timer_done = False
 
         for n in range(0, 1000):
-            s_strin = ser.read_until(b'\n')
+            s_strin = bus.read_until(b'\n')
             if time.time() - t_now > 0:
                 if not serial_timer_done:
                     serial_timer_done = True
                     print("now")
-                self.inputData(bcd.splitData(s_strin))
-
-
-
+                self.inputData(self.splitData(s_strin, 4))
 
 # s = b'farm:90.00:90.00:90.00\n'
 # s1 = b'farm:50.00:50.00:50.00\n'

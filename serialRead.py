@@ -24,9 +24,6 @@ class BicepCurlData:
         self.start_time = None
         self.file_name = "data.txt"
 
-        # read file
-        # self.readJSONFile()
-
     # Get the data
     def input(self, yaw0, roll0, pitch0, yaw1, roll1, pitch1):
         if self.start_time is None:
@@ -116,9 +113,6 @@ class BicepCurlData:
         return None
 
     def filterDataPeak(self):
-        # for i in range(len(self.data[0])):  # 0 - 6
-        #     for j in range(1, len(self.data)-1): # data
-        #         self.data[j][i] = (self.data[j][i] + self.data[j][i-1] + self.data[j][i+1]) / 3
         for i in range(2, len(self.data)-2):
             for j in range(len(self.data[i])):
                 # average of the 5 values
@@ -148,16 +142,6 @@ class BicepCurlData:
             if t_begin is not None and time.time() - t_begin > length:
                 done = True
                 print("done")
-
-# s = b'farm:90.00:90.00:90.00\n'
-# s1 = b'farm:50.00:50.00:50.00\n'
-# s2 = b'uarm:40.00:40.00:40.00\n'
-# bcd = BicepCurlData()
-# bcd.inputData(bcd.splitData(s))
-# bcd.inputData(bcd.splitData(s1))
-# bcd.inputData(bcd.splitData(s2))
-
-# print("done")
 
 
 if __name__ == "__main__":

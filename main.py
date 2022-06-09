@@ -12,11 +12,13 @@ if __name__ == '__main__':
     bcd.readJSONFile("sua/1_keer_normaal_daarna_te_snel.json")
 
     # bcd.plotDataWithTime()
-    bcd.data = averageFilter2(bcd.data, 7)
+    bcd.data = averageFilter2(bcd.data, 11)
     bcd.plotDataWithTime()
 
     cd = ClassifyData(bcd.data)
     lp = cd.getLowPoints(1)
+    print("max time = {}".format(cd.maxTimeBetweenPoints(lp)))
+    print("min time = {}".format(cd.minTimeBetweenPoints(lp)))
 
 
     # # bcd.readFromSerial(serial.Serial("COM5", 9600, timeout=1), 1000, 20, 10)

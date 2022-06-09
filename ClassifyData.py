@@ -1,4 +1,5 @@
 # import sklearn
+import numpy as np
 
 class ClassifyData:
     def __init__(self, data):
@@ -97,8 +98,11 @@ class ClassifyData:
         average_time_between_low_points /= len(lowest_points)
         return average_time_between_low_points
 
-    def maxTimeBetweenPoints(self, points: list):
-        return max(points[:][6])
+    # def maxTimeBetweenPoints(self, points: list):
+    #     time_between = []
+    #     for i in range(len(points)-1):
+    #         time_between.append(points[])
+    #     return max(np.array(points)[:, 6])
 
-    def minTimeBetweenLowPoints(self, points: list):
-        return min(points[:][6])
+    def minTimeBetweenPoints(self, points: list):
+        return min(np.array(points)[:, 6])

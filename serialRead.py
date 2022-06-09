@@ -73,8 +73,8 @@ class BicepCurlData:
         return None
 
     # Write the data to a file
-    def writeJSONFile(self):
-        with open("data.json", "w") as file:
+    def writeJSONFile(self, file_name):
+        with open(file_name, "w") as file:
             json.dump(self.data, file, indent=1)
 
     # Read the data from a file

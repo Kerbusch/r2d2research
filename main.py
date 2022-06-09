@@ -9,7 +9,7 @@ import serial
 
 if __name__ == '__main__':
     bcd = BicepCurlData()
-    bcd.readJSONFile("sua/1_keer_normaal_daarna_te_snel.json")
+    bcd.readJSONFile("sua/goede_data.json")
 
     # bcd.plotDataWithTime()
     bcd.data = averageFilter2(bcd.data, 11)
@@ -17,8 +17,12 @@ if __name__ == '__main__':
 
     cd = ClassifyData(bcd.data)
     lp = cd.getLowPoints(1)
+    hp = cd.getHighPoints(1)
+    print("aantal points = {}".format(len(lp)))
     print("max time = {}".format(cd.maxTimeBetweenPoints(lp)))
     print("min time = {}".format(cd.minTimeBetweenPoints(lp)))
+    print("avg time lp = {}".format(cd.getAverageTimeBetweenPoints(lp)))
+    print(hp)
 
 
     # # bcd.readFromSerial(serial.Serial("COM5", 9600, timeout=1), 1000, 20, 10)

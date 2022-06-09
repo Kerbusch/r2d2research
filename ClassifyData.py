@@ -1,3 +1,5 @@
+# import sklearn
+
 class ClassifyData:
     def __init__(self, data):
         # Initialize the data with forearm (yaw, roll, pitch), upper arm (yaw, roll, pitch) and time since last datapoint

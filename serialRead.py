@@ -112,17 +112,6 @@ class BicepCurlData:
         plt.show()
         return None
 
-    def filterDataPeak(self):
-        for i in range(2, len(self.data)-2):
-            for j in range(len(self.data[i])):
-                # average of the 5 values
-                # self.data[i][j] = (self.data[i][j] + self.data[i-1][j] + self.data[i-2][j] + self.data[i+1][j] + self.data[i+2][j]) / 5
-
-                # median
-                self.data[i][j] = np.median((self.data[i-2][j], self.data[i-1][j], self.data[i][j], self.data[i+1][j], self.data[i+2][j]))
-
-        return self.data
-
     def readFromSerial(self, bus: serial.Serial, n: int = 1000, wait: int = 10, length: int = 10):
         t_now = time.time()
         t_begin = None

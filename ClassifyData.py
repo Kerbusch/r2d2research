@@ -44,12 +44,7 @@ class ClassifyData:
             # zet bicep curl in correcte classificatie
             return
         
-    def getAverageTimeBetweenCurls(self):
-        # all data from forearm
-        # Find the lowest points with their indexes
-        # get the time between the lowest points
-        # calculate the average time between the lowest points
-
+    def getLowPoints(self, sensor: int):
         lowest_points = []
 
         # using the data from the forearm pitch

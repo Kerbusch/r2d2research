@@ -31,21 +31,28 @@ class ClassifyData:
         # self.tijd_maximum_classify_waarde = 2+self.standaardafwijking_tijd
 
     def ClassifyCheck(self, data):
+        classifier_list = []
+
         if (data[0] < self.farm_minimum_yaw_classify_waarde or data[0] > self.farm_maximum_yaw_classify_waarde) or (data[3] < self.uarm_minimum_yaw_classify_waarde or data[3] > self.uarm_maximum_yaw_classify_waarde):  # if yaw is outside the minimum and maximum yaw classify value
             # zet in yaw feedback classification
-            return
+            classifier_list.append()
+
         if (data[1] < self.farm_minimum_roll_classify_waarde or data[1] > self.farm_maximum_roll_classify_waarde) or (data[4] < self.uarm_minimum_roll_classify_waarde or data[4] > self.uarm_maximum_roll_classify_waarde):  # if roll is outside the minimum and maximum roll classify value
             # zet in roll feedback classification
-            return
+            classifier_list.append()
+
         if (data[2] < self.farm_minimum_pitch_classify_waarde or data[2] > self.farm_maximum_pitch_classify_waarde) or (data[5] < self.uarm_minimum_pitch_classify_waarde or data[5] > self.uarm_maximum_pitch_classify_waarde):  # if pitch is outside the minimum and maximum pitch classify value
             # zet in pitch feedback classification
-            return
+            classifier_list.append()
+
         if data[6] < self.tijd_minimum_classify_waarde or data[6] > self.tijd_maximum_classify_waarde:
             # zet in tijd feedback classification
-            return
+            classifier_list.append()
         else:
             # zet bicep curl in correcte classificatie
-            return
+            classifier_list.append()
+
+        self.giveFeedback(classifier_list)
 
     def giveFeedback(self, classifiers: list):
         for classifier in classifiers:
@@ -58,13 +65,15 @@ class ClassifyData:
             elif classifier == 3:
                 print("Arm is not brought up high enough")
             elif classifier == 4:
-                print("")
+                print("Arm is brought up too high")
+            elif classifier == 5:
+                print("Movement does not resemble a bicep curl")
 
     def getLowPoints(self, sensor: int):
         lowest_points = []
         rounded_data = []
         for i in range(len(self.data)):
-            rounded_data.append(round(self.data[i][sensor], 1))
+            rounded_data.append(round(self.data[i][sensor], 2))
 
         # print(rounded_data)
 

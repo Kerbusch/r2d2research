@@ -45,7 +45,20 @@ class ClassifyData:
         else:
             # zet bicep curl in correcte classificatie
             return
-        
+
+    def giveFeedback(self, classifiers: list):
+        for classifier in classifiers:
+            if classifier == 0:
+                print("Bicep curl is done correctly")
+            elif classifier == 1:
+                print("Bicep curl is done too fast")
+            elif classifier == 2:
+                print("Bicep curl is done too slow")
+            elif classifier == 3:
+                print("Arm is not brought up high enough")
+            elif classifier == 4:
+                print("")
+
     def getLowPoints(self, sensor: int):
         lowest_points = []
         rounded_data = []
@@ -56,7 +69,7 @@ class ClassifyData:
 
         # using the data from the forearm pitch
         for i in range(2, len(self.data)-2):
-            if (rounded_data[i - 2] > rounded_data[i - 1] > rounded_data[i]) and (rounded_data[i + 2] > rounded_data[i + 1] > rounded_data[i]):
+            if (rounded_data[i - 2] > rounded_data[i - 1] >= rounded_data[i]) and (rounded_data[i + 2] > rounded_data[i + 1] >= rounded_data[i]):
             # if (self.data[i - 2][sensor] > self.data[i - 1][sensor] > self.data[i][sensor]) and (self.data[i+2][sensor] > self.data[i+1][sensor] > self.data[i][sensor]):
                 lowest_points.append(self.data[i])
         return lowest_points
@@ -69,8 +82,8 @@ class ClassifyData:
 
         # using the data from the forearm pitch
         for i in range(2, len(self.data) - 2):
-            if (rounded_data[i - 2] < rounded_data[i - 1] < rounded_data[i]) and (
-                    rounded_data[i + 2] < rounded_data[i + 1] < rounded_data[i]):
+            if (rounded_data[i - 2] < rounded_data[i - 1] <= rounded_data[i]) and (
+                    rounded_data[i + 2] < rounded_data[i + 1] <= rounded_data[i]):
                 highest_points.append(self.data[i])
         return highest_points
 

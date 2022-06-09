@@ -4,6 +4,8 @@ import json
 import matplotlib.pyplot as plt
 import numpy as np
 
+from filter import medianFilter
+
 # data verzamelen over 1 hele curl met 2 sensoren
 # data opslaan
 # data in array met daarin de sensorlocatie, de waarde en de tijd
@@ -76,17 +78,17 @@ class BicepCurlData:
             json.dump(self.data, file, indent=1)
 
     # Read the data from a file
-    def readJSONFile(self):
-        with open("data.json", "r") as file:
+    def readJSONFile(self, file_name):
+        with open(file_name, "r") as file:
             if file.read() == "":
                 return None
-        with open("data.json", "r") as file:
+        with open(file_name, "r") as file:
             self.data = json.load(file)
         return None
 
     def plotData(self):
         # Plot the data
-        d = self.filterDataPeak()
+        d = medianFilter(self.data)
         plt.plot(d)
         plt.legend(['f yaw', 'f roll', 'f pitch', 'u yaw', 'u roll', 'u pitch', 'time'])
         plt.show()
@@ -94,8 +96,7 @@ class BicepCurlData:
 
     def plotDataWithTime(self):
         # Plot the data
-        d = self.filterDataPeak()
-
+        d = medianFilter(self.data)
         x = []
         for point in d:
             x.append(point[6])

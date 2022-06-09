@@ -6,28 +6,28 @@ class ClassifyData:
         self.data = data  # [y, r, p, y, r, p, tijd]
         self.classification_data = data  # PLACEHOLDER voor 'goede data' voor classification
 
-        self.standaardafwijking_yaw = 2 # PLACEHOLDER afwijking
-        self.standaardafwijking_roll = 2 # PLACEHOLDER afwijking
-        self.standaardafwijking_pitch = 2 # PLACEHOLDER afwijking
-        self.standaardafwijking_tijd = 0.5 # goeie afwijking qua tijd
-        
-        self.farm_minimum_yaw_classify_waarde = self.classification_data[0]-self.standaardafwijking_yaw  # min van data[0] met standaardafwijking van 2
-        self.farm_maximum_yaw_classify_waarde = self.classification_data[0]+self.standaardafwijking_yaw  # max van data[0] met standaardafwijking van 2
-        self.uarm_minimum_yaw_classify_waarde = self.classification_data[3]-self.standaardafwijking_yaw  # min van data[3] met standaardafwijking van 2
-        self.uarm_maximum_yaw_classify_waarde = self.classification_data[3]+self.standaardafwijking_yaw  # max van data[3] met standaardafwijking van 2
-
-        self.farm_minimum_roll_classify_waarde = self.classification_data[1]-self.standaardafwijking_roll  # min van data[1] met standaardafwijking van 2
-        self.farm_maximum_roll_classify_waarde = self.classification_data[1]+self.standaardafwijking_roll  # max van data[1] met standaardafwijking van 2
-        self.uarm_minimum_roll_classify_waarde = self.classification_data[4]-self.standaardafwijking_roll  # min van data[4] met standaardafwijking van 2
-        self.uarm_maximum_roll_classify_waarde = self.classification_data[4]+self.standaardafwijking_roll  # max van data[4] met standaardafwijking van 2
-
-        self.farm_minimum_pitch_classify_waarde = self.classification_data[2]-self.standaardafwijking_pitch  # min van data[2] met standaardafwijking van 2
-        self.farm_maximum_pitch_classify_waarde = self.classification_data[2]+self.standaardafwijking_pitch  # max van data[2] met standaardafwijking van 2
-        self.uarm_minimum_pitch_classify_waarde = self.classification_data[5]-self.standaardafwijking_pitch  # min van data[5] met standaardafwijking van 2
-        self.uarm_maximum_pitch_classify_waarde = self.classification_data[5]+self.standaardafwijking_pitch  # max van data[5] met standaardafwijking van 2
-
-        self.tijd_minimum_classify_waarde = 2-self.standaardafwijking_tijd
-        self.tijd_maximum_classify_waarde = 2+self.standaardafwijking_tijd
+        # self.standaardafwijking_yaw = 2 # PLACEHOLDER afwijking
+        # self.standaardafwijking_roll = 2 # PLACEHOLDER afwijking
+        # self.standaardafwijking_pitch = 2 # PLACEHOLDER afwijking
+        # self.standaardafwijking_tijd = 0.5 # goeie afwijking qua tijd
+        #
+        # self.farm_minimum_yaw_classify_waarde = self.classification_data[0]-self.standaardafwijking_yaw  # min van data[0] met standaardafwijking van 2
+        # self.farm_maximum_yaw_classify_waarde = self.classification_data[0]+self.standaardafwijking_yaw  # max van data[0] met standaardafwijking van 2
+        # self.uarm_minimum_yaw_classify_waarde = self.classification_data[3]-self.standaardafwijking_yaw  # min van data[3] met standaardafwijking van 2
+        # self.uarm_maximum_yaw_classify_waarde = self.classification_data[3]+self.standaardafwijking_yaw  # max van data[3] met standaardafwijking van 2
+        #
+        # self.farm_minimum_roll_classify_waarde = self.classification_data[1]-self.standaardafwijking_roll  # min van data[1] met standaardafwijking van 2
+        # self.farm_maximum_roll_classify_waarde = self.classification_data[1]+self.standaardafwijking_roll  # max van data[1] met standaardafwijking van 2
+        # self.uarm_minimum_roll_classify_waarde = self.classification_data[4]-self.standaardafwijking_roll  # min van data[4] met standaardafwijking van 2
+        # self.uarm_maximum_roll_classify_waarde = self.classification_data[4]+self.standaardafwijking_roll  # max van data[4] met standaardafwijking van 2
+        #
+        # self.farm_minimum_pitch_classify_waarde = self.classification_data[2]-self.standaardafwijking_pitch  # min van data[2] met standaardafwijking van 2
+        # self.farm_maximum_pitch_classify_waarde = self.classification_data[2]+self.standaardafwijking_pitch  # max van data[2] met standaardafwijking van 2
+        # self.uarm_minimum_pitch_classify_waarde = self.classification_data[5]-self.standaardafwijking_pitch  # min van data[5] met standaardafwijking van 2
+        # self.uarm_maximum_pitch_classify_waarde = self.classification_data[5]+self.standaardafwijking_pitch  # max van data[5] met standaardafwijking van 2
+        #
+        # self.tijd_minimum_classify_waarde = 2-self.standaardafwijking_tijd
+        # self.tijd_maximum_classify_waarde = 2+self.standaardafwijking_tijd
 
     def ClassifyCheck(self, data):
         if (data[0] < self.farm_minimum_yaw_classify_waarde or data[0] > self.farm_maximum_yaw_classify_waarde) or (data[3] < self.uarm_minimum_yaw_classify_waarde or data[3] > self.uarm_maximum_yaw_classify_waarde):  # if yaw is outside the minimum and maximum yaw classify value
@@ -48,13 +48,44 @@ class ClassifyData:
         
     def getLowPoints(self, sensor: int):
         lowest_points = []
+        rounded_data = []
+        for i in range(len(self.data)):
+            rounded_data.append(round(self.data[i][sensor], 1))
+
+        # print(rounded_data)
 
         # using the data from the forearm pitch
-        for i in range(1, len(self.data) - 1):
-            if self.data[i-1][2] > self.data[i][2] and self.data[i+1][2] > self.data[i][2]:
-                lowest_points.append(self.data[i-1])
+        for i in range(2, len(self.data)-2):
+            if (rounded_data[i - 2] > rounded_data[i - 1] > rounded_data[i]) and (rounded_data[i + 2] > rounded_data[i + 1] > rounded_data[i]):
+            # if (self.data[i - 2][sensor] > self.data[i - 1][sensor] > self.data[i][sensor]) and (self.data[i+2][sensor] > self.data[i+1][sensor] > self.data[i][sensor]):
+                lowest_points.append(self.data[i])
+        return lowest_points
 
-        print(lowest_points)
+    def getHighPoints(self, sensor: int):
+        highest_points = []
+        rounded_data = []
+        for i in range(len(self.data)):
+            rounded_data.append(round(self.data[i][sensor], 1))
 
+        # using the data from the forearm pitch
+        for i in range(2, len(self.data) - 2):
+            if (rounded_data[i - 2] < rounded_data[i - 1] < rounded_data[i]) and (
+                    rounded_data[i + 2] < rounded_data[i + 1] < rounded_data[i]):
+                highest_points.append(self.data[i])
+        return highest_points
 
-        return 0
+    def getAverageTimeBetweenLowPoints(self, sensor: int):
+        # get the time between the lowest points
+        # calculate the average time between the lowest points
+        lowest_points = self.getLowPoints(sensor)
+        average_time_between_low_points = 0
+        for i in range(len(lowest_points)-1):
+            average_time_between_low_points += lowest_points[i+1][6] - lowest_points[i][6]
+        average_time_between_low_points /= len(lowest_points)
+        return average_time_between_low_points
+
+    def maxTimeBetweenPoints(self, points: list):
+        return max(points[:][6])
+
+    def minTimeBetweenLowPoints(self, points: list):
+        return min(points[:][6])

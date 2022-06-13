@@ -2,47 +2,78 @@ import serial
 
 from serialRead import BicepCurlData
 from ClassifyData import ClassifyData, ClassifyDataVariable
-from filter import medianFilter, averageFilter2
+from filter import medianFilter, averageFilter
 import numpy as np
 
 
-import serial
-
-#TODO: verander var naar diff ipv min en max
-#TODO: samenvoegen van de classifier data voor de perfecte curl
-#TODO: toepassen classifier op de data
-
-
 def readWithLoop():
-    bcd = BicepCurlData()
+    bcd_ = BicepCurlData()
 
+    # make first wait 20 sec
     wait_t = 20
 
+    # open serial port
     bus = serial.Serial("COM7", 9600, timeout=1)
 
-    while (True):
-
+    while True:
+        # start when enter is pressed or exit with "exit"
         i_in = input("pres enter to start or \"exit\"")
         if i_in == "exit":
             break
-        bcd.data = []
-        bcd.readFromSerial(bus, 1000, wait_t, 10)
-        bcd.plotDataWithTime()
+        bcd_.data = [] # clear data
+
+        # read data from serial port
+        bcd_.readFromSerial(bus, 1000, wait_t, 10)
+        bcd_.plotDataWithTime()
+
+        # get filename for saving data
         f_name = "data_" + input("filename:") + ".json"
         print(f_name)
-        bcd.writeJSONFile(f_name)
+        bcd_.writeJSONFile(f_name)
+        print("")
+        wait_t = 1
+
+
+def compairInput():
+    bcd_ = BicepCurlData()
+    cd_ = ClassifyData()
+
+    # make first wait 20 sec
+    wait_t = 20
+
+    # open serial port
+    bus = serial.Serial("COM7", 9600, timeout=1)
+
+    while True:
+        # start when enter is pressed or exit with "exit"
+        i_in = input("pres enter to start or \"exit\"")
+        if i_in == "exit":
+            break
+        bcd_.data = [] # clear data
+
+        # read data from serial port
+        bcd_.readFromSerial(bus, 1000, wait_t, 10)
+        bcd_.data = medianFilter(bcd_.data)
+        bcd_.data = averageFilter(bcd_.data, 11)
+        bcd_.plotDataWithTime()
+
+        # import the data into the classifier and get the result
+        cd_.importInputData(bcd_.data)
+        cd_.classifyCheck()
+
         print("")
         wait_t = 1
 
 
 if __name__ == '__main__':
+    # compairInput()
     # readWithLoop()
 
     bcd = BicepCurlData()
-    # bcd.readJSONFile("data_emma_goed4.json")
-    bcd.readFromSerial(serial.Serial("COM7", 9600, timeout=1), 1000, 20, 10)
+    bcd.readJSONFile("data_emma_goed4.json")
+    # bcd.readFromSerial(serial.Serial("COM7", 9600, timeout=1), 1000, 20, 10)
     bcd.data = medianFilter(bcd.data)
-    bcd.data = averageFilter2(bcd.data, 11)
+    bcd.data = averageFilter(bcd.data, 11)
     bcd.plotDataWithTime()
 
     cd = ClassifyData()

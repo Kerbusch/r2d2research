@@ -4,16 +4,7 @@ import json
 import matplotlib.pyplot as plt
 import numpy as np
 
-from filter import medianFilter, averageFilter2
-
-# data verzamelen over 1 hele curl met 2 sensoren
-# data opslaan
-# data in array met daarin de sensorlocatie, de waarde en de tijd
-# kijken wanneer de arm van onder naar boven en terug is
-
-# data analyseren en feedback geven
-# Kijken naar snelheid
-# Kijken naar hoekhoogte
+from filter import medianFilter, averageFilter
 
 
 class BicepCurlData:
@@ -24,7 +15,6 @@ class BicepCurlData:
         self.last_farm_data = None
         self.last_uarm_data = None
         self.start_time = None
-        self.file_name = "data.txt"
 
     # Get the data
     def input(self, yaw0, roll0, pitch0, yaw1, roll1, pitch1):
@@ -34,8 +24,7 @@ class BicepCurlData:
             self.data.append([float(yaw0), float(roll0), float(pitch0), float(yaw1), float(roll1), float(pitch1), time.time() - self.start_time])
         except ValueError:
             print("ValueError, data not added")
-        except:
-            print("Error, data not added")
+            # this happens when the arduino sends wrong data to the serial bus.
 
     # input data with farm prefix
     def input_farm(self, yaw, roll, pitch):
@@ -91,14 +80,7 @@ class BicepCurlData:
             self.data = json.load(file)
         return None
 
-    def plotData(self):
-        # Plot the data
-        d = medianFilter(self.data)
-        plt.plot(d)
-        plt.legend(['f yaw', 'f roll', 'f pitch', 'u yaw', 'u roll', 'u pitch', 'time'])
-        plt.show()
-        return None
-
+    # Plot the data with time on the x-axis and the data on the y-axis
     def plotDataWithTime(self):
         # Plot the data
         d = medianFilter(self.data)
@@ -119,6 +101,7 @@ class BicepCurlData:
         plt.show()
         return None
 
+    # Read the data from the serial port and input it to the data array
     def readFromSerial(self, bus: serial.Serial, n: int = 1000, wait: int = 10, length: int = 10):
         t_now = time.time()
         t_begin = None
@@ -139,22 +122,3 @@ class BicepCurlData:
             if t_begin is not None and time.time() - t_begin > length:
                 done = True
                 print("done")
-
-
-if __name__ == "__main__":
-    ser = serial.Serial("COM7", 9600, timeout=1)
-    time_now = time.time()
-    bcd = BicepCurlData()
-    print("begin loading")
-    bcd.readJSONFile()
-    print("done loading")
-
-    # bcd.readFromSerial(ser)
-    # print("data collection done")
-    #
-    # bcd.writeJSONFile()
-    # print("done writing")
-
-    bcd.plotData()
-
-    print("done")

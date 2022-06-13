@@ -29,7 +29,7 @@ class ClassifyDataVariable:
                            self.uarm_yaw_diff,
                            self.uarm_roll_diff,
                            self.uarm_pitch_diff
-        ]
+                           ]
         return self.dataFloats
 
     def getFromList(self, data: list):
@@ -56,7 +56,7 @@ class ClassifyDataVariable:
 
 class ClassifyData:
     def __init__(self):
-        # Initialize the data with forearm (yaw, roll, pitch), upper arm (yaw, roll, pitch) and time since last datapoint
+        # Initialize the data with forearm (yaw, roll, pitch), upper arm (yaw, roll, pitch) and time since last point
         self.data = []  # [y, r, p, y, r, p, tijd]
         self.classification_data = []
         self.classification_super_data = ClassifyDataVariable()
@@ -68,33 +68,6 @@ class ClassifyData:
         self.readJSONFile()
         self.makeSuperData()
         self.createStandardDeviationVariable()
-        print("done with init")
-
-        #TODO bereken de standaardafwijking en vervangen placeholders
-
-        # # average of yaw, pitch and roll of the forearm
-        # self.avg_farm_yaw = 2
-        # self.avg_farm_pitch = 2
-        # self.avg_farm_roll = 2
-        #
-        # # average of yaw, pitch and roll of the upper arm
-        # self.avg_uarm_yaw = 2
-        # self.avg_uarm_pitch = 2
-        # self.avg_uarm_roll = 2
-        #
-        # # standard deviation of yaw, pitch and roll of the forearm
-        # self.sd_farm_yaw = 2 # PLACEHOLDER afwijking
-        # self.sd_farm_pitch = 2  # PLACEHOLDER afwijking
-        # self.sd_farm_roll = 2  # PLACEHOLDER afwijking
-        #
-        # # standard deviation of yaw, pitch and roll of the upper arm
-        # self.sd_uarm_yaw = 2  # PLACEHOLDER afwijking
-        # self.sd_uarm_pitch = 2  # PLACEHOLDER afwijking
-        # self.sd_uarm_roll = 2  # PLACEHOLDER afwijking
-        #
-        # # average and standard deviation of time
-        # self.avg_time = 0.5
-        # self.sd_time = 0.5
 
     def classifyCheck(self):
         self.makeSuperData()
@@ -102,61 +75,73 @@ class ClassifyData:
 
         classifier_list = []
 
-        #TODO data[] aanpassen naar wat wordt verstuurd
-
-        if self.classification_input_data.farm_yaw_diff < (self.classification_super_data.farm_yaw_diff - self.classification_stand_data.farm_yaw_diff):
+        if self.classification_input_data.farm_yaw_diff < \
+                (self.classification_super_data.farm_yaw_diff - self.classification_stand_data.farm_yaw_diff):
             classifier_list.append(3)
             print("farm_yaw_diff - ")
 
-        if self.classification_input_data.farm_yaw_diff > (self.classification_super_data.farm_yaw_diff + self.classification_stand_data.farm_yaw_diff):
+        if self.classification_input_data.farm_yaw_diff > \
+                (self.classification_super_data.farm_yaw_diff + self.classification_stand_data.farm_yaw_diff):
             classifier_list.append(4)
             print("farm_yaw_diff +")
 
-        if self.classification_input_data.farm_pitch_diff < (self.classification_super_data.farm_pitch_diff - self.classification_stand_data.farm_pitch_diff):
+        if self.classification_input_data.farm_pitch_diff < \
+                (self.classification_super_data.farm_pitch_diff - self.classification_stand_data.farm_pitch_diff):
             classifier_list.append(3)
             print("farm_pitch_diff -")
 
-        if self.classification_input_data.farm_pitch_diff > (self.classification_super_data.farm_pitch_diff + self.classification_stand_data.farm_pitch_diff):
+        if self.classification_input_data.farm_pitch_diff > \
+                (self.classification_super_data.farm_pitch_diff + self.classification_stand_data.farm_pitch_diff):
             classifier_list.append(4)
             print("farm_pitch_diff +")
 
-        if self.classification_input_data.farm_roll_diff < (self.classification_super_data.farm_roll_diff - self.classification_stand_data.farm_roll_diff):
+        if self.classification_input_data.farm_roll_diff < \
+                (self.classification_super_data.farm_roll_diff - self.classification_stand_data.farm_roll_diff):
             classifier_list.append(3)
             print("farm_roll_diff -")
 
-        if self.classification_input_data.farm_roll_diff > (self.classification_super_data.farm_roll_diff + self.classification_stand_data.farm_roll_diff):
+        if self.classification_input_data.farm_roll_diff > \
+                (self.classification_super_data.farm_roll_diff + self.classification_stand_data.farm_roll_diff):
             classifier_list.append(4)
             print("farm_roll_diff +")
 
-        if self.classification_input_data.uarm_yaw_diff < (self.classification_super_data.uarm_yaw_diff - self.classification_stand_data.uarm_yaw_diff):
+        if self.classification_input_data.uarm_yaw_diff < \
+                (self.classification_super_data.uarm_yaw_diff - self.classification_stand_data.uarm_yaw_diff):
             classifier_list.append(3)
             print("uarm_yaw_diff -")
 
-        if self.classification_input_data.uarm_yaw_diff > (self.classification_super_data.uarm_yaw_diff + self.classification_stand_data.uarm_yaw_diff):
+        if self.classification_input_data.uarm_yaw_diff > \
+                (self.classification_super_data.uarm_yaw_diff + self.classification_stand_data.uarm_yaw_diff):
             classifier_list.append(4)
             print("uarm_yaw_diff +")
 
-        if self.classification_input_data.uarm_pitch_diff < (self.classification_super_data.uarm_pitch_diff - self.classification_stand_data.uarm_pitch_diff):
+        if self.classification_input_data.uarm_pitch_diff < \
+                (self.classification_super_data.uarm_pitch_diff - self.classification_stand_data.uarm_pitch_diff):
             classifier_list.append(3)
             print("uarm_pitch_diff -")
 
-        if self.classification_input_data.uarm_pitch_diff > (self.classification_super_data.uarm_pitch_diff + self.classification_stand_data.uarm_pitch_diff):
+        if self.classification_input_data.uarm_pitch_diff > \
+                (self.classification_super_data.uarm_pitch_diff + self.classification_stand_data.uarm_pitch_diff):
             classifier_list.append(4)
             print("uarm_pitch_diff +")
 
-        if self.classification_input_data.uarm_roll_diff < (self.classification_super_data.uarm_roll_diff - self.classification_stand_data.uarm_roll_diff):
+        if self.classification_input_data.uarm_roll_diff < \
+                (self.classification_super_data.uarm_roll_diff - self.classification_stand_data.uarm_roll_diff):
             classifier_list.append(3)
             print("uarm_roll_diff - ")
 
-        if self.classification_input_data.uarm_roll_diff > (self.classification_super_data.uarm_roll_diff + self.classification_stand_data.uarm_roll_diff):
+        if self.classification_input_data.uarm_roll_diff > \
+                (self.classification_super_data.uarm_roll_diff + self.classification_stand_data.uarm_roll_diff):
             classifier_list.append(4)
             print("uarm_roll_diff + ")
 
-        if self.classification_input_data.min_time < (self.classification_super_data.min_time - self.classification_stand_data.min_time):
+        if self.classification_input_data.min_time < \
+                (self.classification_super_data.min_time - self.classification_stand_data.min_time):
             classifier_list.append(1)
             print("max_time - ")
 
-        if self.classification_input_data.max_time > (self.classification_super_data.max_time + self.classification_stand_data.max_time):
+        if self.classification_input_data.max_time > \
+                (self.classification_super_data.max_time + self.classification_stand_data.max_time):
             classifier_list.append(2)
             print("max_time + ")
 
@@ -170,7 +155,6 @@ class ClassifyData:
         self.giveFeedback(classifier_list)
 
     def giveFeedback(self, classifiers: list):
-
         # give feedback according to the classification
         for classifier in classifiers:
             if classifier == 0:
@@ -191,8 +175,6 @@ class ClassifyData:
         rounded_data = []
         for i in range(len(data)):
             rounded_data.append(round(data[i][sensor], 2))
-
-        # print(rounded_data)
 
         # using the data from the forearm pitch
         for i in range(2, len(data)-2):
@@ -283,10 +265,8 @@ class ClassifyData:
         c.uarm_pitch_diff = uarm_pitch_max - uarm_pitch_min
 
         if c.checkDataValid():
-            print("Data is valid")
             return c
-        print("Data is not valid")
-        return None
+        raise "Data is not valid"
 
     def importInputData(self, data: list):
         self.data = data
@@ -317,7 +297,6 @@ class ClassifyData:
             for part in x:
                 cdv = ClassifyDataVariable()
                 cdv.getFromList(part)
-                print(cdv)
                 self.classification_data.append(cdv)
         return None
 
@@ -356,7 +335,7 @@ class ClassifyData:
         self.classification_stand_data.uarm_pitch_diff = n*np.std(l_uarm_pitch)
     
     def makeSuperData(self):
-        if self.classification_data == []:
+        if not self.classification_data:
             return None
         sum_time_max = 0
         sum_time_min = 0
@@ -367,7 +346,6 @@ class ClassifyData:
         sum_uarm_yaw = 0
         sum_uarm_roll = 0
         sum_uarm_pitch = 0
-
 
         for i in range(len(self.classification_data)):
             sum_time_max += self.classification_data[i].max_time
@@ -408,8 +386,3 @@ class ClassifyData:
             self.classification_super_data.uarm_roll_diff *= -1
         if self.classification_super_data.uarm_pitch_diff < 0:
             self.classification_super_data.uarm_pitch_diff *= -1
-
-
-
-
-

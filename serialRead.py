@@ -4,7 +4,7 @@ import json
 import matplotlib.pyplot as plt
 import numpy as np
 
-from filter import medianFilter
+from filter import medianFilter, averageFilter2
 
 # data verzamelen over 1 hele curl met 2 sensoren
 # data opslaan
@@ -30,7 +30,12 @@ class BicepCurlData:
     def input(self, yaw0, roll0, pitch0, yaw1, roll1, pitch1):
         if self.start_time is None:
             self.start_time = time.time()
-        self.data.append([float(yaw0), float(roll0), float(pitch0), float(yaw1), float(roll1), float(pitch1), time.time() - self.start_time])
+        try:
+            self.data.append([float(yaw0), float(roll0), float(pitch0), float(yaw1), float(roll1), float(pitch1), time.time() - self.start_time])
+        except ValueError:
+            print("ValueError, data not added")
+        except:
+            print("Error, data not added")
 
     # input data with farm prefix
     def input_farm(self, yaw, roll, pitch):
@@ -97,6 +102,7 @@ class BicepCurlData:
     def plotDataWithTime(self):
         # Plot the data
         d = medianFilter(self.data)
+        # d = averageFilter2(d, 11)
         x = []
         for point in d:
             x.append(point[6])
@@ -128,6 +134,7 @@ class BicepCurlData:
                     serial_timer_done = True
                     print("now")
                     t_begin = time.time()
+                    self.start_time = time.time()
                 self.inputData(self.splitData(s_strin, 4))
             if t_begin is not None and time.time() - t_begin > length:
                 done = True

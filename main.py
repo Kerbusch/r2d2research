@@ -20,7 +20,7 @@ def readWithLoop():
         i_in = input("pres enter to start or \"exit\"")
         if i_in == "exit":
             break
-        bcd_.data = [] # clear data
+        bcd_.data = []  # clear data
 
         # read data from serial port
         bcd_.readFromSerial(bus, 1000, wait_t, 10)
@@ -70,7 +70,7 @@ if __name__ == '__main__':
     # readWithLoop()
 
     bcd = BicepCurlData()
-    bcd.readJSONFile("data_emma_goed4.json")
+    bcd.readJSONFile("sua/sua_data_2.json")
     # bcd.readFromSerial(serial.Serial("COM7", 9600, timeout=1), 1000, 20, 10)
     bcd.data = medianFilter(bcd.data)
     bcd.data = averageFilter(bcd.data, 11)

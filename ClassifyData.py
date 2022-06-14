@@ -135,13 +135,13 @@ class ClassifyData:
             classifier_list.append(4)
             print("uarm_roll_diff + ")
 
-        if self.classification_input_data.min_time < \
-                (self.classification_super_data.min_time - self.classification_stand_data.min_time):
+        if self.classification_input_data.avg_time < \
+                (self.classification_super_data.avg_time - self.classification_stand_data.avg_time):
             classifier_list.append(1)
             print("max_time - ")
 
-        if self.classification_input_data.max_time > \
-                (self.classification_super_data.max_time + self.classification_stand_data.max_time):
+        if self.classification_input_data.avg_time > \
+                (self.classification_super_data.avg_time + self.classification_stand_data.avg_time):
             classifier_list.append(2)
             print("max_time + ")
 
@@ -166,9 +166,7 @@ class ClassifyData:
             elif classifier == 3:
                 print("Arm is not brought up high enough")
             elif classifier == 4:
-                print("Arm is brought up too high")
-            elif classifier == 5:
-                print("Movement does not resemble a bicep curl")
+                print("he bicep curl was too close to the upper arm, try to do it further away from the upper arm")
 
     def getLowPoints(self, data, sensor: int):
         lowest_points = []

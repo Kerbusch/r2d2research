@@ -62,6 +62,10 @@ def compairInput():
 
         # read data from serial port
         bcd_.readFromSerial(bus, 1000, wait_t, 10)
+        if bcd_.data == []:
+            print("no data, try again")
+            continue
+
         bcd_.data = medianFilter(bcd_.data)
         bcd_.data = averageFilter(bcd_.data, 11)
         bcd_.plotDataWithTime()
@@ -74,28 +78,101 @@ def compairInput():
         wait_t = 1
 
 
+def importAllClassificationData():
+    emma = 9
+    jarno = 11
+    joris = 12
+    sua = 20
+
+    filter_n = 15
+
+    for i in range(1,emma+1):
+        f_name = "data/data_emma_goed" + str(i) + ".json"
+        print(f_name)
+        bcd_ = BicepCurlData()
+        bcd_.readJSONFile(f_name)
+        bcd_.data = medianFilter(bcd_.data)
+        bcd_.data = averageFilter(bcd_.data, filter_n)
+        # bcd_.plotDataWithTime()
+        cd_ = ClassifyData()
+        cd_.importInputData(bcd_.data)
+        cd_.importClassificationData(bcd_.data)
+        cd_.writeJSONFile()
+
+    for i in range(1,jarno+1):
+        f_name = "data/data_jarno_goed" + str(i) + ".json"
+        print(f_name)
+        bcd_ = BicepCurlData()
+        bcd_.readJSONFile(f_name)
+        bcd_.data = medianFilter(bcd_.data)
+        bcd_.data = averageFilter(bcd_.data, filter_n)
+        cd_ = ClassifyData()
+        cd_.importInputData(bcd_.data)
+        cd_.importClassificationData(bcd_.data)
+        cd_.writeJSONFile()
+
+    for i in range(1,joris+1):
+        f_name = "data/data_joris_goed" + str(i) + ".json"
+        print(f_name)
+        bcd_ = BicepCurlData()
+        bcd_.readJSONFile(f_name)
+        bcd_.data = medianFilter(bcd_.data)
+        bcd_.data = averageFilter(bcd_.data, filter_n)
+        cd_ = ClassifyData()
+        cd_.importInputData(bcd_.data)
+        cd_.importClassificationData(bcd_.data)
+        cd_.writeJSONFile()
+
+    for i in range(1,sua+1):
+        f_name = "data/data_sua_goed" + str(i) + ".json"
+        print(f_name)
+        bcd_ = BicepCurlData()
+        bcd_.readJSONFile(f_name)
+        bcd_.data = medianFilter(bcd_.data)
+        bcd_.data = averageFilter(bcd_.data, filter_n)
+        cd_ = ClassifyData()
+        cd_.importInputData(bcd_.data)
+        cd_.importClassificationData(bcd_.data)
+        cd_.writeJSONFile()
+
+
 if __name__ == '__main__':
     # compairInput()
     # readWithLoop()
+    # importAllClassificationData()
 
     bcd = BicepCurlData()
-    bcd.readJSONFile("data_jarno_goed5.json")
-    # bcd.writeJSONFile("fail.json")
+    bcd.readJSONFile("data/data_sua_goed1.json")
     bcd.data = medianFilter(bcd.data)
-    bcd.data = averageFilter(bcd.data, 11)
-    # bcd.writeJSONFile("fail.json")
-
-    # # bcd.readFromSerial(serial.Serial("COM7", 9600, timeout=1), 1000, 20, 10)
-    # bcd.data = medianFilter(bcd.data)
-    # bcd.data = averageFilter(bcd.data, 11)
-    # bcd.plotDataWithTime()
+    bcd.data = averageFilter(bcd.data, 15)
+    bcd.plotDataWithTime()
     #
     cd = ClassifyData()
     cd.importInputData(bcd.data)
-    # # print(cd)
+    cd.classifyCheck()
+    # print(cd)
+    # cd.importClassificationData(bcd.data)
+    # cd.writeJSONFile()
+
+
+    # bcd = BicepCurlData()
+    # bcd.readJSONFile("sua/goede_data.json")
+    # # # bcd.writeJSONFile("fail.json")
+    # bcd.data = medianFilter(bcd.data)
+    # bcd.data = averageFilter(bcd.data, 11)
+    # # # bcd.writeJSONFile("fail.json")
+    # #
+    # # # # bcd.readFromSerial(serial.Serial("COM7", 9600, timeout=1), 1000, 20, 10)
+    # # # bcd.data = medianFilter(bcd.data)
+    # # # bcd.data = averageFilter(bcd.data, 11)
+    # # # bcd.plotDataWithTime()
+    # # #
+    # cd = ClassifyData()
+    # cd.importInputData(bcd.data)
+    # # # # print(cd)
     # cd.classifyCheck()
-    cd.importClassificationData(bcd.data)
-    cd.writeJSONFile()
+    # # cd.importClassificationData(bcd.data)
+    # # cd.writeJSONFile()
 
 
 

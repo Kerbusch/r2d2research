@@ -197,7 +197,8 @@ class ClassifyData:
     def getTimeBetweenPoints(self, points: list):
         time_between = []
         for i in range(len(points) - 1):
-            time_between.append(points[i + 1][6] - points[i][6])
+            if not (points[i + 1][6] - points[i][6]) < 0.2:
+                time_between.append(points[i + 1][6] - points[i][6])
         return time_between
 
     def getAverageTimeBetweenPoints(self, points: list):
@@ -245,6 +246,9 @@ class ClassifyData:
         c.avg_time = self.getAverageTimeBetweenPoints(lp_1)
         c.max_time = self.maxTimeBetweenPoints(lp_1)
         c.min_time = self.minTimeBetweenPoints(lp_1)
+
+        if c.min_time < 0.2:
+            raise Exception("time to low")
 
         farm_yaw_max = self.maxValueOnPoint(hp_0, 0)
         farm_roll_max = self.maxValueOnPoint(hp_1, 1)
@@ -326,7 +330,8 @@ class ClassifyData:
             l_uarm_roll.append(data.uarm_roll_diff)
             l_uarm_pitch.append(data.uarm_pitch_diff)
 
-        n = 2
+        sd_f = 1
+        sd_u = 1.5
 
         self.classification_stand_data.avg_time = np.std(l_time_avg)
         self.classification_stand_data.max_time = np.std(l_time_max)

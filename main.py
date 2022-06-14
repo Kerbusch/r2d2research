@@ -79,7 +79,7 @@ def compairInput():
 
 
 def importAllClassificationData():
-    emma = 9
+    emma = 15
     jarno = 11
     joris = 12
     sua = 20
@@ -142,7 +142,7 @@ if __name__ == '__main__':
     # importAllClassificationData()
 
     bcd = BicepCurlData()
-    bcd.readJSONFile("data/data_sua_goed1.json")
+    bcd.readJSONFile("valid/data_emma_valid_snel_en_hoog.json")
     bcd.data = medianFilter(bcd.data)
     bcd.data = averageFilter(bcd.data, 15)
     bcd.plotDataWithTime()

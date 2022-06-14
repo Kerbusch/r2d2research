@@ -202,12 +202,18 @@ class ClassifyData:
 
     def getAverageTimeBetweenPoints(self, points: list):
         time_between = self.getTimeBetweenPoints(points)
+        if len(time_between) == 0:
+            return 0
         return sum(time_between) / len(time_between)
 
     def maxTimeBetweenPoints(self, points: list):
+        if len(points) == 0:
+            return 0
         return max(self.getTimeBetweenPoints(points))
 
     def minTimeBetweenPoints(self, points: list):
+        if len(points) == 0:
+            return 0
         return min(self.getTimeBetweenPoints(points))
 
     def maxValueOnPoint(self, high_points: list, sensor: int):

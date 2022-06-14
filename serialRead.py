@@ -69,7 +69,11 @@ class BicepCurlData:
     # Write the data to a file
     def writeJSONFile(self, file_name):
         with open(file_name, "w") as file:
-            json.dump(self.data, file, indent=1)
+            print(type(self.data))
+            if type(self.data) is np.ndarray:
+                json.dump(self.data.tolist(), file, indent=1)
+            else:
+                json.dump(self.data, file, indent=1)
 
     # Read the data from a file
     def readJSONFile(self, file_name):

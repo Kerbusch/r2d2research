@@ -55,7 +55,7 @@ def compairInput():
 
     while True:
         # start when enter is pressed or exit with "exit"
-        i_in = input("pres enter to start or \"exit\"")
+        i_in = input("press enter to start or \"exit\"")
         if i_in == "exit":
             break
         bcd_.data = []  # clear data

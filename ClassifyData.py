@@ -77,12 +77,12 @@ class ClassifyData:
 
         if self.classification_input_data.farm_yaw_diff < \
                 (self.classification_super_data.farm_yaw_diff - self.classification_stand_data.farm_yaw_diff):
-            classifier_list.append(3)
+            # classifier_list.append(3)
             print("farm_yaw_diff - ")
 
         if self.classification_input_data.farm_yaw_diff > \
                 (self.classification_super_data.farm_yaw_diff + self.classification_stand_data.farm_yaw_diff):
-            classifier_list.append(4)
+            # classifier_list.append(4)
             print("farm_yaw_diff +")
 
         if self.classification_input_data.farm_pitch_diff < \
@@ -331,12 +331,12 @@ class ClassifyData:
         self.classification_stand_data.avg_time = np.std(l_time_avg)
         self.classification_stand_data.max_time = np.std(l_time_max)
         self.classification_stand_data.min_time = np.std(l_time_min)
-        self.classification_stand_data.farm_yaw_diff = n*np.std(l_farm_yaw)
-        self.classification_stand_data.farm_roll_diff = n*np.std(l_farm_roll)
-        self.classification_stand_data.farm_pitch_diff = n*np.std(l_farm_pitch)
-        self.classification_stand_data.uarm_yaw_diff = n*np.std(l_uarm_yaw)
-        self.classification_stand_data.uarm_roll_diff = n*np.std(l_uarm_roll)
-        self.classification_stand_data.uarm_pitch_diff = n*np.std(l_uarm_pitch)
+        self.classification_stand_data.farm_yaw_diff = sd_f*np.std(l_farm_yaw)
+        self.classification_stand_data.farm_roll_diff = sd_f*np.std(l_farm_roll)
+        self.classification_stand_data.farm_pitch_diff = sd_f*np.std(l_farm_pitch)
+        self.classification_stand_data.uarm_yaw_diff = sd_u*np.std(l_uarm_yaw)
+        self.classification_stand_data.uarm_roll_diff = sd_u*np.std(l_uarm_roll)
+        self.classification_stand_data.uarm_pitch_diff = sd_u*np.std(l_uarm_pitch)
 
         # TODO: fixed min time get values les than 1 second
     

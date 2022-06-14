@@ -158,13 +158,13 @@ class ClassifyData:
         # give feedback according to the classification
         for classifier in classifiers:
             if classifier == 0:
-                print("Bicep curl is done correctly")
+                print("You performed a correct bicep curl, Good job")
             elif classifier == 1:
-                print("Bicep curl is done too fast")
+                print("The bicep curl was performed too fast, try to do it slower")
             elif classifier == 2:
-                print("Bicep curl is done too slow")
+                print("The bicep curl was performed too slow, try to do it faster")
             elif classifier == 3:
-                print("Arm is not brought up high enough")
+                print("The bicep curl was too far from the upper arm, try to do it closer towards the upper arm")
             elif classifier == 4:
                 print("he bicep curl was too close to the upper arm, try to do it further away from the upper arm")
 

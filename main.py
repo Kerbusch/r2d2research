@@ -13,7 +13,7 @@ def readWithLoop():
     wait_t = 20
 
     # open serial port
-    bus = serial.Serial("COM7", 115200, timeout=1)
+    bus = serial.Serial("COM8", 115200, timeout=1)
 
     while True:
         # start when enter is pressed or exit with "exit"
@@ -142,7 +142,7 @@ if __name__ == '__main__':
     # importAllClassificationData()
 
     # bcd = BicepCurlData()
-    # bcd.readJSONFile("data/data_emma_goed1.json")
+    # bcd.readJSONFile("data_f.json")
     # bcd.data = medianFilter(bcd.data)
     # bcd.data = averageFilter(bcd.data, 15)
     # bcd.plotDataWithTime()

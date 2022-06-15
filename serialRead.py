@@ -87,7 +87,8 @@ class BicepCurlData:
     # Plot the data with time on the x-axis and the data on the y-axis
     def plotDataWithTime(self):
         # Plot the data
-        d = medianFilter(self.data)
+        d = self.data
+        # d = medianFilter(self.data)
         # d = averageFilter2(d, 11)
         x = []
         for point in d:

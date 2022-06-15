@@ -1,4 +1,3 @@
-# import sklearn
 import numpy as np
 import json
 
@@ -28,8 +27,7 @@ class ClassifyDataVariable:
                            self.farm_pitch_diff,
                            self.uarm_yaw_diff,
                            self.uarm_roll_diff,
-                           self.uarm_pitch_diff
-                           ]
+                           self.uarm_pitch_diff]
         return self.dataFloats
 
     def getFromList(self, data: list):
@@ -197,7 +195,7 @@ class ClassifyData:
     def getTimeBetweenPoints(self, points: list):
         time_between = []
         for i in range(len(points) - 1):
-            if not (points[i + 1][6] - points[i][6]) < 0.2:
+            if not (points[i + 1][6] - points[i][6]) < 0.7:
                 time_between.append(points[i + 1][6] - points[i][6])
         return time_between
 
@@ -247,7 +245,7 @@ class ClassifyData:
         c.max_time = self.maxTimeBetweenPoints(lp_1)
         c.min_time = self.minTimeBetweenPoints(lp_1)
 
-        if c.min_time < 0.2:
+        if c.min_time < 0.7:
             raise Exception("time to low")
 
         farm_yaw_max = self.maxValueOnPoint(hp_0, 0)

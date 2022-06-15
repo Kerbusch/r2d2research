@@ -86,7 +86,7 @@ def importAllClassificationData():
 
     filter_n = 15
 
-    for i in range(1,emma+1):
+    for i in range(2,emma+1):  # skip first
         f_name = "data/data_emma_goed" + str(i) + ".json"
         print(f_name)
         bcd_ = BicepCurlData()
@@ -138,18 +138,18 @@ def importAllClassificationData():
 
 if __name__ == '__main__':
     # compairInput()
-    # readWithLoop()
+    readWithLoop()
     # importAllClassificationData()
 
-    bcd = BicepCurlData()
-    bcd.readJSONFile("valid/data_emma_valid_snel_en_hoog.json")
-    bcd.data = medianFilter(bcd.data)
-    bcd.data = averageFilter(bcd.data, 15)
-    bcd.plotDataWithTime()
-    #
-    cd = ClassifyData()
-    cd.importInputData(bcd.data)
-    cd.classifyCheck()
+    # bcd = BicepCurlData()
+    # bcd.readJSONFile("data/data_emma_goed1.json")
+    # bcd.data = medianFilter(bcd.data)
+    # bcd.data = averageFilter(bcd.data, 15)
+    # bcd.plotDataWithTime()
+
+    # cd = ClassifyData()
+    # cd.importInputData(bcd.data)
+    # cd.classifyCheck()
     # print(cd)
     # cd.importClassificationData(bcd.data)
     # cd.writeJSONFile()

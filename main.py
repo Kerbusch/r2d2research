@@ -13,7 +13,7 @@ def readWithLoop():
     wait_t = 20
 
     # open serial port
-    bus = serial.Serial("COM8", 115200, timeout=1)
+    bus = serial.Serial("COM5", 115200, timeout=1)
 
     while True:
         # start when enter is pressed or exit with "exit"
@@ -51,7 +51,7 @@ def compairInput():
     wait_t = 20
 
     # open serial port
-    bus = serial.Serial("COM7", 9600, timeout=1)
+    bus = serial.Serial("COM5", 9600, timeout=1)
 
     while True:
         # start when enter is pressed or exit with "exit"

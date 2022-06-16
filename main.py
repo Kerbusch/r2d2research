@@ -138,18 +138,18 @@ def importAllClassificationData():
 
 if __name__ == '__main__':
     # compairInput()
-    readWithLoop()
+    # readWithLoop()
     # importAllClassificationData()
 
-    # bcd = BicepCurlData()
-    # bcd.readJSONFile("data_f.json")
-    # bcd.data = medianFilter(bcd.data)
-    # bcd.data = averageFilter(bcd.data, 15)
-    # bcd.plotDataWithTime()
+    bcd = BicepCurlData()
+    bcd.readJSONFile("valid/data_emma_valid_niet_hoog.json")
+    bcd.data = medianFilter(bcd.data)
+    bcd.data = averageFilter(bcd.data, 15)
+    bcd.plotDataWithTime()
 
-    # cd = ClassifyData()
-    # cd.importInputData(bcd.data)
-    # cd.classifyCheck()
+    cd = ClassifyData()
+    cd.importInputData(bcd.data)
+    cd.classifyCheck()
     # print(cd)
     # cd.importClassificationData(bcd.data)
     # cd.writeJSONFile()

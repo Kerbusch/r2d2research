@@ -4,35 +4,36 @@ from serialRead import BicepCurlData
 from ClassifyData import ClassifyData
 from filter import medianFilter, averageFilter2
 import numpy as np
-
+import tensorflow as tf
 import serial
 
 if __name__ == '__main__':
+    best_model_path = "/home/wilhelm/Documents/GitHub/r2d2research/sua/"
+    best_model = tf.keras.models.load_model(best_model_path)
+    data_collecting = True
+    bus = serial.Serial("/dev/ttyUSB0", 115200, timeout=1)
     bcd = BicepCurlData()
-    bcd.readJSONFile("sua/1_keer_normaal_daarna_te_snel.json")
-
-    # bcd.plotDataWithTime()
-    bcd.data = averageFilter2(bcd.data, 11)
-    bcd.plotDataWithTime()
-
-    cd = ClassifyData(bcd.data)
-    lp = cd.getLowPoints(1)
-    print("max time = {}".format(cd.maxTimeBetweenPoints(lp)))
-    print("min time = {}".format(cd.minTimeBetweenPoints(lp)))
-
-
-    # # bcd.readFromSerial(serial.Serial("COM5", 9600, timeout=1), 1000, 20, 10)
-    # bcd.plotDataWithTime()
-    # bcd.writeJSONFile()
-    #
-    # m = medianFilter(bcd.data)
-    # for i in range(6):
-    #
-    # a = np.convolve(bcd.data[], [0.5, 1, 0.5], 'full')
-    #
-    # cd = ClassifyData(a)
-    # x = cd.getAverageTimeBetweenCurls(1)
-    # print(x)
+    bcd.readFromSerial(bus, 1000, 20, 10)
+    bcd.plotData()
+    best_model_path = "/home/wilhelm/Documents/GitHub/r2d2research/sua/"
+    while data_collecting :
+        bcd = BicepCurlData()
+        input_of_user = input("give classifier input [g:good, l:too much to the left , r:too much to the right , f:too fast , s:too slow ]: ")
+        if input_of_user == "q":
+            data_collecting = False
+        bcd.readFromSerial(bus, 1000, 2, 2)
+        bcd.plotData(input_of_user)
+        mg = tf.keras.preprocessing.image.load_img("data.png", target_size=(420,420))
+        image = tf.keras.preprocessing.image.img_to_array(mg)
+        image = np.expand_dims(image,axis=0)
+        val = best_model.predict(image)
+        if val.argmax(axis=1) == [0] :
+            print("good bicep curl")
+        if val.argmax(axis=1) == [1] :
+            print("too fast")
+        if val.argmax(axis=1) == [2] :
+            print("too slow")
+        print( val.argmax(axis=1))
 
 
 

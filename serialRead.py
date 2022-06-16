@@ -86,11 +86,12 @@ class BicepCurlData:
             self.data = json.load(file)
         return None
 
-    def plotData(self):
+    def plotData(self,savename = "data.png"):
         # Plot the data
         d = medianFilter(self.data)
+        plt.figure()
         plt.plot(d)
-        plt.legend(['f yaw', 'f roll', 'f pitch', 'u yaw', 'u roll', 'u pitch', 'time'])
+        plt.savefig(savename)
         plt.show()
         return None
 
@@ -135,18 +136,12 @@ class BicepCurlData:
 
 
 if __name__ == "__main__":
-    ser = serial.Serial("COM7", 9600, timeout=1)
+    ser = serial.Serial("/dev/ttyUSB0", 115200, timeout=1)
     time_now = time.time()
     bcd = BicepCurlData()
     print("begin loading")
     bcd.readJSONFile()
     print("done loading")
-
-    # bcd.readFromSerial(ser)
-    # print("data collection done")
-    #
-    # bcd.writeJSONFile()
-    # print("done writing")
 
     bcd.plotData()
 

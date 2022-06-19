@@ -11,7 +11,7 @@ if __name__ == '__main__':
     best_model_path = "/home/wilhelm/Documents/GitHub/r2d2research/sua/"
     best_model = tf.keras.models.load_model(best_model_path)
     data_collecting = True
-    bus = serial.Serial("/dev/ttyUSB0", 115200, timeout=1)
+    bus = serial.Serial("/dev/ttyUSB1", 115200, timeout=1)
     bcd = BicepCurlData()
     bcd.readFromSerial(bus, 1000, 20, 10)
     bcd.plotData()

@@ -136,7 +136,7 @@ class BicepCurlData:
 
 
 if __name__ == "__main__":
-    ser = serial.Serial("/dev/ttyUSB0", 115200, timeout=1)
+    ser = serial.Serial("/dev/ttyUSB1", 115200, timeout=1)
     time_now = time.time()
     bcd = BicepCurlData()
     print("begin loading")

@@ -7,6 +7,7 @@ import numpy as np
 from filter import medianFilter, averageFilter
 
 
+# Class for storing the data from the bicep curl
 class BicepCurlData:
     # Constructor with read from file
     def __init__(self):
@@ -107,7 +108,9 @@ class BicepCurlData:
         return None
 
     # Read the data from the serial port and input it to the data array
-    def readFromSerial(self, bus: serial.Serial, n: int = 1000, wait: int = 10, length: int = 10):
+    # this function waits for n second to combat the sensor initialisation
+    # this function reads for n seconds after waiting
+    def readFromSerial(self, bus: serial.Serial, wait: int = 10, length: int = 10):
         t_now = time.time()
         t_begin = None
         print("waiting {} seconds".format(wait))
@@ -116,14 +119,14 @@ class BicepCurlData:
         done = False
 
         while not done:
-            s_strin = bus.read_until(b'\n')
+            s = bus.read_until(b'\n')
             if time.time() - t_now > wait:
                 if not serial_timer_done:
                     serial_timer_done = True
                     print("now")
                     t_begin = time.time()
                     self.start_time = time.time()
-                self.inputData(self.splitData(s_strin, 4))
+                self.inputData(self.splitData(s, 4))
             if t_begin is not None and time.time() - t_begin > length:
                 done = True
                 print("done")

@@ -2,7 +2,10 @@ import numpy as np
 import json
 
 
+# class for data handling
+# basically just a struct of data for easier handling
 class ClassifyDataVariable:
+    # constructor
     def __init__(self):
         self.dataFloats = []
 
@@ -18,6 +21,7 @@ class ClassifyDataVariable:
         self.uarm_roll_diff = None
         self.uarm_pitch_diff = None
 
+    # convert class members to list for serialization
     def convertToList(self):
         self.dataFloats = [self.max_time,
                            self.min_time,
@@ -30,6 +34,7 @@ class ClassifyDataVariable:
                            self.uarm_pitch_diff]
         return self.dataFloats
 
+    # get class members from list
     def getFromList(self, data: list):
         self.max_time = data[0]
         self.min_time = data[1]
@@ -42,6 +47,7 @@ class ClassifyDataVariable:
         self.uarm_pitch_diff = data[8]
         return self
 
+    # check if data is valid
     def checkDataValid(self) -> bool:
         if self.max_time is None or self.min_time is None or self.avg_time is None:
             return False
@@ -52,7 +58,9 @@ class ClassifyDataVariable:
         return True
 
 
+# class for classifying data
 class ClassifyData:
+    # constructor
     def __init__(self):
         # Initialize the data with forearm (yaw, roll, pitch), upper arm (yaw, roll, pitch) and time since last point
         self.data = []  # [y, r, p, y, r, p, tijd]
@@ -67,6 +75,7 @@ class ClassifyData:
         self.makeSuperData()
         self.createStandardDeviationVariable()
 
+    # classify the data form self.classification_input_data
     def classifyCheck(self):
         self.makeSuperData()
         self.createStandardDeviationVariable()
@@ -152,8 +161,8 @@ class ClassifyData:
 
         self.giveFeedback(classifier_list)
 
+    # give feedback to the user based on the output of the classifier
     def giveFeedback(self, classifiers: list):
-        # give feedback according to the classification
         for classifier in classifiers:
             if classifier == 0:
                 print("You performed a correct bicep curl, Good job")
@@ -164,8 +173,9 @@ class ClassifyData:
             elif classifier == 3:
                 print("The bicep curl was too far from the upper arm, try to do it closer towards the upper arm")
             elif classifier == 4:
-                print("he bicep curl was too close to the upper arm, try to do it further away from the upper arm")
+                print("The bicep curl was too close to the upper arm, try to do it further away from the upper arm")
 
+    # return a list with all the low points of the data
     def getLowPoints(self, data, sensor: int):
         lowest_points = []
         rounded_data = []
@@ -179,6 +189,7 @@ class ClassifyData:
                 lowest_points.append(data[i])
         return lowest_points
 
+    # return a list with all the high points of the data
     def getHighPoints(self, data, sensor: int):
         highest_points = []
         rounded_data = []
@@ -192,6 +203,7 @@ class ClassifyData:
                 highest_points.append(data[i])
         return highest_points
 
+    # return a list with the time between the points
     def getTimeBetweenPoints(self, points: list):
         time_between = []
         for i in range(len(points) - 1):
@@ -199,32 +211,38 @@ class ClassifyData:
                 time_between.append(points[i + 1][6] - points[i][6])
         return time_between
 
+    # return the average time between points
     def getAverageTimeBetweenPoints(self, points: list):
         time_between = self.getTimeBetweenPoints(points)
         if len(time_between) == 0:
             return 0
         return sum(time_between) / len(time_between)
 
+    # return the max time between points
     def maxTimeBetweenPoints(self, points: list):
         if len(points) == 0:
             return 0
         return max(self.getTimeBetweenPoints(points))
 
+    # return the min time between points
     def minTimeBetweenPoints(self, points: list):
         if len(points) == 0:
             return 0
         return min(self.getTimeBetweenPoints(points))
 
+    # return the highest point of the data
     def maxValueOnPoint(self, high_points: list, sensor: int):
         if not high_points:
             return max(np.array(self.data)[:, sensor])
         return max(np.array(high_points)[:, sensor])
 
+    # return the lowest point of the data
     def minValueOnPoint(self, low_points: list, sensor: int):
         if not low_points:
             return min(np.array(self.data)[:, sensor])
         return min(np.array(low_points)[:, sensor])
 
+    # create a ClassifyDataVariable object from the given data
     def createClassificationDataVariable(self, data: list):
         c = ClassifyDataVariable()
 
@@ -274,15 +292,18 @@ class ClassifyData:
             return c
         raise "Data is not valid"
 
+    # set the self input data from the given data
     def importInputData(self, data: list):
         self.data = data
         self.classification_input_data = self.createClassificationDataVariable(data)
 
+    # append classification data from the given data
     def importClassificationData(self, data: list):
         x = self.createClassificationDataVariable(data)
         if x is not None:
             self.classification_data.append(x)
 
+    # write the classification data to the given file
     def writeJSONFile(self):
         with open(self.classification_file_name, "w") as file:
             x = []
@@ -293,7 +314,7 @@ class ClassifyData:
             json.dump(x, file, indent=1)
         return True
 
-    # Read the data from a file
+    # read the classification data from the given file
     def readJSONFile(self):
         with open(self.classification_file_name, "r") as file:
             if file.read() == "":
@@ -306,7 +327,9 @@ class ClassifyData:
                 self.classification_data.append(cdv)
         return None
 
+    # set the standard deviation of the data
     def createStandardDeviationVariable(self):
+        # this function should be made better -Daan
         l_time_max = []
         l_time_min = []
         l_time_avg = []
@@ -328,8 +351,8 @@ class ClassifyData:
             l_uarm_roll.append(data.uarm_roll_diff)
             l_uarm_pitch.append(data.uarm_pitch_diff)
 
-        sd_f = 1
-        sd_u = 1.5
+        sd_f = 1  # standard deviation of fore arm
+        sd_u = 1.5  # standard deviation of upper arm
 
         self.classification_stand_data.avg_time = np.std(l_time_avg)
         self.classification_stand_data.max_time = np.std(l_time_max)
@@ -341,9 +364,9 @@ class ClassifyData:
         self.classification_stand_data.uarm_roll_diff = sd_u*np.std(l_uarm_roll)
         self.classification_stand_data.uarm_pitch_diff = sd_u*np.std(l_uarm_pitch)
 
-        # TODO: fixed min time get values les than 1 second
-    
+    # create the "super" data with the average of the classification data
     def makeSuperData(self):
+        # this function should be made better -Daan
         if not self.classification_data:
             return None
         sum_time_max = 0

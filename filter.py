@@ -3,6 +3,7 @@ from copy import deepcopy
 import numpy as np
 
 
+# Median filter with 3 tabs
 def medianFilter(data):
     data_copy = deepcopy(data)
     for i in range(2, len(data) - 2):
@@ -13,6 +14,7 @@ def medianFilter(data):
     return data_copy
 
 
+# Average filter with n tabs
 def averageFilter(data, tabs):
     # needs to be uneven otherwise it will add 1 to the tabs
     if tabs % 2 == 0:
